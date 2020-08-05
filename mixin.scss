@@ -1,0 +1,139 @@
+@charset "UTF-8";
+
+$img-path : 'example';
+
+@mixin bg($bg-color, $name, $path : $img-path) {
+    background: $bg-color url("../im/#{$path}/#{$name}");
+    background-repeat: no-repeat;
+}
+
+@mixin clearfix {
+    &:after {
+        display: table;
+        clear: both;
+        content: "";
+    }
+}
+
+@mixin ir {
+    overflow: hidden;
+    text-indent: 100%;
+    color: transparent;
+    font-size: 0;
+    vertical-align: top;
+}
+
+@mixin ellipsis{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+@mixin imr {
+    text-indent: 102%;
+    white-space: nowrap;
+    overflow: hidden;
+    padding: 0;
+}
+
+@mixin hide {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+}
+
+@mixin line-clamp($lines, $line-height){
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: $lines;
+    -webkit-box-orient: vertical;
+    line-height: $line-height;
+    max-height: ( $line-height * $lines );
+}
+
+// posiiton
+@mixin position($position, $top:null, $right:null, $bottom:null, $left:null){
+	position:$position;
+	top:$top;
+	right:$right;
+	bottom:$bottom;
+	left:$left;
+}
+
+//20200805_1833
+// position 쓰다 transform 쓰기 귀찮아서 만들기 시작
+// 왜이렇게 난잡한거 같지
+
+@mixin center($arr...) {
+    // $top_val: null;
+    $pos_val: fixed;
+    $l: left;
+    $t: top;
+    $top_num: -50%;
+    $left_num: -50%;
+
+    @each $var in $arr {
+      @if ($var == absolute){
+        @debug "1-1 =#{$var}";
+        $pos_val: absolute;
+      }
+      @if ($var == right){
+        $l: right;
+        $left_num: 50%;
+        @debug "1-2 =#{$var}";
+        @debug "1-2 =#{$left_num}";
+      }
+      @if ($var == topnull){
+        @debug "1-3 =#{$var}";
+        $t: null;
+      }
+      @if ($var == leftnull){
+        @debug "1-4 =#{$var}";
+        $l: null;
+      }
+      @if ($var == posnull){
+        @debug "1-5 =#{$var}";
+        $pos_val: null;
+      }
+    }
+
+    @if($t != null){
+        @debug "3-1 =#{$t}";
+        top: 50%;
+    }@else {
+        @debug "3-2 =#{$t}";
+        $top_num: 0;
+    }
+
+    @if($l == null){
+        @debug "4-1 =#{$l}";
+        $left_num: 0;
+    }@else if($l == right){
+        @debug "4-2 =#{$l}";
+        right: 50%;
+        $left_num: 50%;
+    }@else {
+        @debug "4-3 =#{$l}";
+        left: 50%;
+        // $left_num: -50%;
+    }
+
+    // default
+    @if($pos_val == null){
+        @debug "2-1 =#{$pos_val}";
+        position: $pos_val;
+        transform: null;
+        $t: null;
+        $l: null;
+    }@else {
+        @debug "2-2 =#{$pos_val}";
+        position: $pos_val;
+        transform: translate($left_num, $top_num);
+    }
+
+}// mixin
